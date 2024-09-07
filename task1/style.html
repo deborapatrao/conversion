@@ -1,0 +1,408 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+  integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+<style>
+  /* CONTACT FORM */
+  :root {
+    --edge-size: 4px;
+    --step-size: 40px;
+    --steps: 3;
+    /* --progress-width: calc((var(--steps) -1) / var(--steps) * 100%); */
+    --progress-width: calc(((var(--steps) - 1) / var(--steps)) * 100%);
+    --step-width: calc(100% / var(--steps));
+
+    /* calc((100% -(100% / var(--steps))) /(var(--steps) - 1)); */
+
+    --white: hsla(360, 100%, 100%, 1);
+    --fern-green: hsla(100, 42%, 36%, 1);
+    --asparagus: hsla(99, 40%, 46%, 1);
+    --dark-moss-green: hsla(101, 45%, 27%, 1);
+    --platinum: hsla(20, 18%, 90%, 1);
+    --taupe-gray: hsla(10, 7%, 64%, 1);
+    --dark-moss-green-2: hsla(102, 43%, 27%, 1);
+    --royal-blue-web-color: hsla(225, 60%, 55%, 1);
+  }
+
+  .contact-section {
+    background-color: #fff;
+    padding: 3rem 2rem;
+    z-index: 100;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    align-self: start;
+  }
+
+  .contact-section button {
+    align-self: end;
+  }
+
+  /* OVERLAY */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background-color: hsla(0, 0%, 0%, 0.42);
+    z-index: 20;
+  }
+
+  .header {
+    z-index: 10;
+  }
+
+  /* BUTTON UI */
+  .section-btn {
+    box-sizing: border-box;
+    font-family: monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: inherit;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    padding: 6px 10px;
+    display: block;
+    position: relative;
+  }
+  .section-btn::after,
+  .section-btn::before {
+    content: "";
+    width: 1px;
+    height: 100%;
+  }
+
+  .section-btn::before {
+    position: absolute;
+    background-color: var(--dark-moss-green);
+    bottom: 0;
+    left: -1px;
+  }
+  .section-btn::after {
+    position: absolute;
+    background-color: var(--dark-moss-green);
+    bottom: 0;
+    right: -1px;
+  }
+
+  .btn-div {
+    background-color: var(--fern-green);
+    color: var(--platinum);
+    display: inline-block;
+    position: relative;
+    border: none;
+    align-self: end;
+  }
+
+  .btn-div::before,
+  .btn-div::after {
+    content: "";
+    position: absolute;
+    box-sizing: border-box;
+  }
+  .btn-div::before {
+    width: calc(100% + 2px);
+    height: calc(100% + 8px);
+    left: -1px;
+    bottom: -4px;
+    background-color: var(--fern-green);
+    box-shadow: inset 0 var(--edge-size) var(--asparagus),
+      inset 0 -4px var(--dark-moss-green), 0 3px rgba(0, 0, 0, 0.5);
+    z-index: -1;
+
+    border: 1px solid black;
+  }
+
+  .btn-div::after {
+    height: calc(100% + 2px);
+    width: calc(100% + 8px);
+    left: -4px;
+    bottom: -1px;
+    background-color: var(--dark-moss-green);
+    box-shadow: 0 3px rgba(0, 0, 0, 0.5);
+    z-index: -2;
+    border: 1px solid black;
+  }
+
+  /* BUTTON UI -> HOVER */
+  .btn-div:hover {
+    background-color: var(--fern-green-2);
+  }
+
+  /* BUTTON UI -> FOCUS */
+  .btn-div:focus-within {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+  .btn-div:focus-within::after {
+    box-shadow: none;
+  }
+  .btn-div:focus-within::before {
+    box-shadow: inset 0 var(--edge-size) var(--asparagus),
+      inset 0 -4px var(--dark-moss-green);
+  }
+
+  .btn-div:focus-within .section-btn {
+    outline: 1px solid var(--royal-blue-web-color);
+    outline-offset: 2px;
+  }
+
+  /* BUTTON UI -> DISABLED */
+  .btn-div:has(button:disabled) {
+    background-color: var(--platinum);
+    color: var(--taupe-gray);
+  }
+  .btn-div:has(button:disabled)::after,
+  .btn-div:has(button:disabled)::before {
+    background-color: var(--platinum);
+    border: 1px solid var(--taupe-gray);
+    box-shadow: none;
+  }
+
+  .section-btn:disabled::before,
+  .section-btn:disabled::after {
+    background-color: var(--platinum);
+  }
+
+  /* BUTTON UI -> PRESSED */
+  .btn-div:active {
+    background-color: var(--dark-moss-green-2);
+    outline: none;
+  }
+
+  .btn-div:active:after,
+  .btn-div:active:before {
+    background-color: var(--dark-moss-green-2);
+    box-shadow: none;
+  }
+
+  .btn:active:before,
+  .btn:active:after {
+    background-color: var(--dark-moss-green-2);
+  }
+
+  .btn-div .section-btn:active {
+    outline: none;
+  }
+</style>
+
+<style>
+  /* Modal */
+  .dialog::backdrop {
+    background: linear-gradient(
+      135deg,
+      rgb(74, 234, 220) 0%,
+      rgb(151, 120, 209) 20%,
+      rgb(207, 42, 186) 40%,
+      rgb(238, 44, 130) 60%,
+      rgb(251, 105, 98) 80%,
+      rgb(254, 248, 76) 100%
+    );
+    opacity: 0.5;
+  }
+
+  .dialog {
+    border: none;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .dialog .btn-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-weight: bold;
+  }
+
+  /* FORM PROGRESS BAR */
+  /*TODO retira o background image - ver se precisa mesmo */
+  /* dialog .contact-form__form::after {
+    content: none;
+  } */
+
+  .progress-container {
+    position: relative;
+  }
+
+  .progress-container::before {
+    content: "";
+    height: 4px;
+    width: var(--progress-width);
+    background-color: var(--taupe-gray);
+    position: absolute;
+    top: calc(var(--step-size) / 2);
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -2;
+  }
+
+  .progress-container .progress {
+    height: 4px;
+    width: var(--progress-width);
+    background-color: var(--royal-blue-web-color);
+    position: absolute;
+    top: calc(var(--step-size) / 2);
+    left: 50%;
+    translate: -50% -50%;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: all 0.3s;
+    z-index: -1;
+  }
+
+  .progress-container ol {
+    list-style-type: none;
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    padding: 0;
+    counter-reset: step-number;
+    z-index: -3;
+  }
+
+  .progress-container li {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--royal-blue-web-color);
+    font-size: 0.875rem;
+  }
+
+  .progress-container i {
+    background-color: var(--white);
+    width: var(--step-size);
+    height: var(--step-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid var(--taupe-gray);
+    color: var(--royal-blue-web-color);
+    position: relative;
+    font-size: 1.25rem;
+  }
+
+  .progress-steps .step-done,
+  .progress-steps .step-current {
+    background-color: var(--royal-blue-web-color);
+  }
+
+  .step-done i,
+  .step-current i {
+    background-color: var(--royal-blue-web-color);
+    color: var(--white);
+    border: 2px solid var(--royal-blue-web-color);
+  }
+
+  .step-done i::after {
+    content: "✓";
+    font-size: 10px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    background-color: var(--asparagus);
+    color: var(--white);
+    border-radius: 50%;
+    border: 1px solid var(--white);
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-current {
+    font-weight: bold;
+  }
+</style>
+<style>
+  /* Form pagination */
+  .form-nav-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+  }
+
+  .form-nav-prev,
+  .form-nav-next {
+    background-color: var(--royal-blue-web-color);
+    padding: 0.5rem;
+    border-radius: 4px;
+    color: var(--white);
+    font-weight: bold;
+    border: 2px solid var(--royal-blue-web-color);
+  }
+
+  .form-nav-next:disabled {
+    background-color: var(--platinum);
+    border-color: var(--taupe-gray);
+    color: var(--taupe-gray);
+  }
+
+  /* form  */
+  .form-container {
+    display: flex;
+    overflow: hidden;
+  }
+  .form-step {
+    flex: 1 0 100%;
+    opacity: 0;
+    transition: all 0.3s;
+    height: fit-content;
+  }
+
+  .form-step.step-current {
+    opacity: 1;
+  }
+
+  .form-step h3 {
+    text-align: center;
+  }
+  .form-step p {
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  .form-container input {
+    width: 100%;
+  }
+
+  .container .contact-form__form {
+    background: none;
+    padding: 0;
+  }
+
+  /* media queries */
+  @media only screen and (min-width: 768px) {
+    .container .contact-form__inner {
+      gap: 1rem;
+    }
+
+    .container .contact-form__form {
+      padding: 0;
+      max-width: unset;
+    }
+
+    .dialog {
+      max-width: 500px;
+    }
+  }
+
+  @media only screen and (min-width: 1000px) {
+    .container .contact-form__inner {
+      gap: 8.625rem;
+    }
+  }
+</style>
