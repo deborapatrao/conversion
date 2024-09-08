@@ -1,49 +1,58 @@
-//get form div
-// const form = document.querySelector("form");
+// FONT AWESOME CDN
+const link = document.createElement("link");
+link.rel = "stylesheet";
+link.href =
+  "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css";
+link.integrity =
+  "sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==";
+link.crossOrigin = "anonymous";
+link.referrerPolicy = "no-referrer";
+document.head.appendChild(link);
+
+// GET ELEMENTS FROM PAGE
 const body = document.querySelector("body");
 const form = document.querySelector(".contact-form__form form");
 const sectionContainer = document.querySelector(".contact-form__form");
 const contactContent = document.querySelector(".contact-form__content");
 
-//create first section
-
-//Create section elements
+// CREATE SECTION
 const section = document.createElement("section");
 const h3 = document.createElement("h3");
 const para = document.createElement("p");
 const btn = document.createElement("button");
 const btnDiv = document.createElement("div");
 
-//Add text
 h3.textContent = "Hello Conversion!";
 para.textContent = "Click on the button to contact us.";
-btn.textContent = "Click Me";
+btn.textContent = "Click here";
 
-//Add classes
 section.classList.add("contact-section");
 btnDiv.classList.add("btn-div");
 btn.classList.add("section-btn");
 
-//append everything to section
 btnDiv.appendChild(btn);
 section.appendChild(h3);
 section.appendChild(para);
 section.appendChild(btnDiv);
-
-// contactContent.insertAdjacentElement("afterend", section);
 sectionContainer.appendChild(section);
 
-//glass-wall
+// OVERLAY
 const overlayDiv = document.createElement("div");
 body.appendChild(overlayDiv);
 overlayDiv.classList.add("overlay");
 
-//modal
+// CREATE MODAL
 const dialog = document.createElement("dialog");
 const btnCloseModal = document.createElement("button");
+const btnCloseTextSpan = document.createElement("span");
+const btnCloseStyleSpan = document.createElement("span");
 
-btnCloseModal.textContent = "X";
-btnCloseModal.setAttribute("aria-label", "Close");
+btnCloseModal.appendChild(btnCloseStyleSpan);
+btnCloseModal.appendChild(btnCloseTextSpan);
+btnCloseTextSpan.classList.add("sr-only");
+btnCloseStyleSpan.classList.add("btn-x");
+btnCloseTextSpan.textContent = "Close";
+btnCloseModal.setAttribute("aria-label", "close");
 
 dialog.prepend(btnCloseModal);
 dialog.appendChild(form);
@@ -53,21 +62,33 @@ dialog.classList.add("dialog");
 dialog.classList.add("hbspt-form");
 btnCloseModal.classList.add("btn-close");
 
-//Open and close modal buttons listeners
+// OPEN AND CLOSE MODAL
 btn.addEventListener("click", () => {
   dialog.showModal();
+  setTimeout(() => {
+    dialog.classList.add("open");
+  }, 10);
 
-  // progressSteps.childNodes[0].classList.add("step-current");
   updateProgress();
 });
 
 btnCloseModal.addEventListener("click", () => {
-  dialog.close();
+  dialog.classList.remove("open");
+  setTimeout(() => {
+    dialog.close();
+  }, 300);
+});
+
+dialog.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  dialog.classList.remove("open");
+  setTimeout(() => {
+    dialog.close();
+  }, 300);
 });
 
 // FORM
-
-//progress bar
+// PROGRESS BAR
 const stepsContent = [
   '<i class="fa-regular fa-user"></i>User Information',
   '<i class="fa-regular fa-circle-question"></i>Inquiry',
@@ -86,7 +107,7 @@ for (let i = 0; i < 3; i++) {
   progressSteps.appendChild(li);
 }
 
-//form navigation
+//FORM NAVIGATION
 const formBtnContainer = document.createElement("div");
 const formPrevBtn = document.createElement("button");
 const formNextBtn = document.createElement("button");
@@ -112,9 +133,7 @@ dialog.appendChild(formBtnContainer);
 
 dialog.prepend(progressContainer);
 
-//Form steps
-//input[name:'firstname'], input[name:'lastname'], input[name:'email'], textarea
-
+// FORM VIEWS
 const formStep1 = document.createElement("div");
 const formStep2 = document.createElement("div");
 const formStep3 = document.createElement("div");
@@ -129,10 +148,9 @@ formStep3.classList.add("form-step");
 
 thankTitle.textContent = "Thank you!";
 thankPara.textContent =
-  "Thank you for reaching out! we'll get back to you shortly.";
+  "Thank you for reaching out! We'll get back to you shortly.";
 
-form.childNodes[0].appendChild;
-
+// CREATE FORM STEPS
 for (let i = 0; i < 2; i++) {
   formStep1.appendChild(form.childNodes[0]);
 }
@@ -150,14 +168,15 @@ formContainer.appendChild(formStep3);
 
 form.appendChild(formContainer);
 
-//Form steps
 let currentStep = 0;
 const steps = formContainer.childNodes;
 
+// FORM NAVIGATION FUNCTIONALITY
 const updateProgress = () => {
   let progressWidth = currentStep / (progressSteps.childNodes.length - 1);
   progress.style.transform = `scaleX(${progressWidth})`;
 
+  //dynamic sizing for form views
   formContainer.style.height = steps[currentStep].offsetHeight + "px";
 
   //progress tracking
@@ -166,23 +185,30 @@ const updateProgress = () => {
     step.classList.toggle("step-done", currentStep > index);
   });
 
-  //form page update
+  // FORM PAGE UPDATE
   steps.forEach((step, index) => {
     step.style.transform = `translateX(-${currentStep * 100}%)`;
     step.classList.toggle("step-current", currentStep === index);
   });
-
+  if (currentStep === 1) {
+    formNextBtn.style.display = "none";
+    formPrevBtn.style.display = "block";
+  } else if (currentStep === 2) {
+    formNextBtn.style.display = "none";
+    formPrevBtn.style.display = "none";
+  } else {
+    formNextBtn.style.display = "block";
+    formPrevBtn.style.display = "none";
+  }
   updateButtons();
 };
 
+// FORM NAVIGATION BUTTONS
 const updateButtons = () => {
   formPrevBtn.hidden = currentStep === 0;
   formNextBtn.hidden = currentStep >= progressSteps.childNodes.length - 1;
 };
 
-const showForm = (n) => {};
-
-//form buttons event listener
 formPrevBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -202,8 +228,8 @@ formNextBtn.addEventListener("click", (e) => {
   updateProgress();
 });
 
-// Form validation
-const submitBtn = document.querySelector('input[type="submit"]');
+// FORM VALIDATION
+const submitBtn = document.querySelector("input.hs-button");
 
 const isValidStep = () => {
   const fields = steps[currentStep].querySelectorAll(
@@ -213,6 +239,15 @@ const isValidStep = () => {
   return [...fields].every((field) => field.reportValidity());
 };
 
+// THANK YOU PAGE
 submitBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  formNextBtn.style.display = "block";
+  currentStep++;
+  updateProgress();
+});
+
+dialog.addEventListener("close", () => {
+  if (currentStep === steps.length - 1) currentStep = 0;
+  updateProgress();
 });
